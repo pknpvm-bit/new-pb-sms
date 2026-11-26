@@ -47,7 +47,6 @@ jobs:
 
           if [ -z "$SDKMANAGER" ]; then
             echo "sdkmanager not found under $SDK_ROOT"
-            ls -la "$SDK_ROOT" || true
             exit 1
           fi
 
@@ -55,25 +54,21 @@ jobs:
           yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" --licenses > /dev/null || true
           "$SDKMANAGER" --sdk_root="$SDK_ROOT" "platform-tools"
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Assemble Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: |
+          if [ -f "./gradlew" ]; then
+            chmod +x gradlew
+            ./gradlew assembleDebug --stacktrace
+          else
+            gradle assembleDebug --stacktrace
+          fi
 
       - name: Upload Debug APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: "**/build/outputs/apk/debug/*.apk"
           if-no-files-found: error
