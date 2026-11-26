@@ -1,68 +1,51 @@
-name: Build BSP-SMS Android APK
- 
+name: Build Android APK
+
 on:
-  workflow_dispatch:
   push:
-    branches: [ main, master ]
-    tags: [ 'v*' ]
+    branches: [ "main", "master" ]
   pull_request:
-    branches: [ main, master ]
- 
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
 permissions:
-  contents: write   # tag push korle GitHub Release-e APK attach korar jonno
- 
-concurrency:
-  group: build-${{ github.ref }}
-  cancel-in-progress: true
- 
+  contents: read
+
 jobs:
-  build-debug-apk:
+  build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
- 
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
- 
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
- 
-      - name: Set up Android SDK
+          java-version: "17"
+
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v3
- 
-      - name: Install SDK packages (compileSdk 35)
-        run: |
-          yes | sdkmanager --licenses > /dev/null || true
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
- 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
         with:
-          gradle-version: '8.9'
-          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master' }}
- 
-      - name: Build Debug APK
-        run: gradle :app:assembleDebug --no-daemon --stacktrace
- 
-      - name: Rename APK
-        run: |
-          mkdir -p dist
-          cp app/build/outputs/apk/debug/app-debug.apk "dist/BSP-SMS-${GITHUB_RUN_NUMBER}-debug.apk"
- 
-      - name: Upload APK artifact
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Assemble Debug APK
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Upload Debug APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: bsp-sms-debug-apk
-          path: dist/*.apk
+          name: app-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
-          retention-days: 30
- 
-      - name: Attach APK to GitHub Release (only on v* tag)
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/*.apk
- 
