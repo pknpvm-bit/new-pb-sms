@@ -1,0 +1,32 @@
+/* BSP-SMS shared "modern" skin for the extension tool pages. Purely visual: no layout/logic changes. */
+html{background:#eef3fa}
+body{font-family:Inter,'Segoe UI','Noto Sans Bengali','Noto Sans',system-ui,-apple-system,sans-serif!important;background:linear-gradient(180deg,#eef4fb 0%,#f7f9fd 100%)!important;color:#1b2740!important;-webkit-font-smoothing:antialiased;line-height:1.45}
+h2,h3{color:#123b70!important;font-weight:800!important;letter-spacing:.1px}
+p,.subtitle,.hint,.hint-note,.card-desc{color:#5b6b82}
+
+/* cards / panels */
+.card,.box,.panel,.lang-box,.cmds,.group-box,.info-bar{border-radius:16px!important;border:1px solid #dfe8f3!important;box-shadow:0 6px 18px rgba(23,59,112,.07)!important}
+.card-title,.panel-title{color:#123b70!important;font-weight:800!important}
+.group-box{background:#f8fbff!important}
+
+/* buttons: keep each button's own colour, add shape, depth and feedback */
+button{border-radius:12px!important;font-weight:700!important;letter-spacing:.1px;box-shadow:0 5px 12px rgba(23,59,112,.18);background-image:linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,0))!important;transition:transform .12s ease,box-shadow .12s ease,filter .12s ease;cursor:pointer}
+button:hover:not(:disabled){filter:brightness(1.07);transform:translateY(-1px);box-shadow:0 8px 16px rgba(23,59,112,.22)}
+button:active:not(:disabled){transform:scale(.98);box-shadow:0 2px 6px rgba(23,59,112,.18)}
+button:disabled{box-shadow:none;opacity:.65;cursor:not-allowed}
+.btn-mini,.clear-col-btn,.tab-btn{box-shadow:none!important;background-image:none!important;transform:none!important}
+.tab-btn{border-radius:11px!important}
+
+/* form controls */
+input,select,textarea{border-radius:11px!important;border:1px solid #d1ddec!important;background-color:#fff!important;transition:border-color .15s ease,box-shadow .15s ease;font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:#4f93d6!important;box-shadow:0 0 0 3px rgba(23,102,167,.16)!important}
+input[type=file]{padding:7px!important;background:#f6f9fd!important}
+input[type=checkbox],input[type=radio]{accent-color:#1766a7}
+
+/* status line */
+#status{border-radius:12px!important}
+
+/* scrollbars */
+::-webkit-scrollbar{width:7px;height:7px}
+::-webkit-scrollbar-thumb{background:#c3d1e4;border-radius:8px}
+::-webkit-scrollbar-track{background:transparent}

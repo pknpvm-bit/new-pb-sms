@@ -1,0 +1,62 @@
+:root{--navy:#123b70;--blue:#1766a7;--ink:#17233a;--muted:#6b7a90;--line:#e2e9f3;--bg:#f3f6fb;--card:#ffffff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;font-family:Inter,'Segoe UI',Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+#app{height:100%;display:flex;flex-direction:column;overflow:hidden;border:1px solid #dce5f2;border-radius:18px;background:var(--bg)}
+#topbar{height:66px;flex:none;background:linear-gradient(120deg,var(--navy),var(--blue));color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px;cursor:move;user-select:none}
+.brand{display:flex;align-items:center;gap:10px}.brand b{font-size:17px;letter-spacing:.4px}.brand small{display:block;font-size:10px;color:#c9def5;margin-top:3px}
+.logo{width:36px;height:36px;border-radius:11px;background:#fff;color:#175b9b;display:grid;place-items:center;font-size:22px;font-weight:900}
+.tools{display:flex;gap:7px}.tools button,.toolbar button{border:0;border-radius:9px;background:#ffffff25;color:#fff;width:31px;height:31px;font-size:20px;cursor:pointer}
+.tools button:hover,.toolbar button:hover{background:#ffffff45}
+#mainView{padding:16px 16px 12px;overflow:auto;flex:1}
+
+/* ---- hero ---- */
+.hero{display:flex;gap:13px;align-items:center;padding:15px;border-radius:18px;color:#fff;background:radial-gradient(120% 140% at 0% 0%,#2f7fc6 0%,#1766a7 38%,#123b70 100%);box-shadow:0 10px 24px #123b7033;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-30px;top:-34px;width:120px;height:120px;border-radius:50%;background:#ffffff14}
+.hero-logo{flex:none;width:50px;height:50px;border-radius:15px;background:#ffffff26;display:grid;place-items:center;border:1px solid #ffffff3a}
+.hero-text{position:relative;z-index:1}
+.eyebrow{font-size:9px;font-weight:800;letter-spacing:1.8px;color:#bcd9f4}
+.hero h1{font-size:21px;margin:3px 0 3px;font-weight:800}
+.hero p{margin:0;font-size:11.5px;color:#d4e6f8;line-height:1.35}
+
+/* ---- search ---- */
+.search{height:42px;background:var(--card);border:1px solid var(--line);border-radius:13px;display:flex;align-items:center;padding:0 13px;gap:9px;color:#6f89a8;margin-top:14px;box-shadow:0 2px 8px #173b7008}
+.search:focus-within{border-color:#78aee0;box-shadow:0 0 0 3px #1766a720}
+.search input{border:0;outline:0;flex:1;font-size:13px;min-width:0;background:transparent;color:var(--ink)}
+
+/* ---- tool cards ---- */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
+.card{--c1:#3b82f6;--c2:#1d4ed8;position:relative;border:1px solid var(--line);background:var(--card);border-radius:17px;padding:13px 12px 12px;text-align:left;cursor:pointer;min-height:132px;display:flex;flex-direction:column;box-shadow:0 4px 12px #173b7010;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;animation:pop .35s ease both;font-family:inherit;color:inherit;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--c1),var(--c2));opacity:.9}
+.card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--c1) 45%,#fff);box-shadow:0 12px 24px #173b7020}
+.card:active{transform:scale(.975)}
+.ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 7px 14px color-mix(in srgb,var(--c2) 38%,transparent),inset 0 1px 0 #ffffff55;margin-bottom:10px;position:relative}
+.ico::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(160deg,#ffffff4d,transparent 55%)}
+.ico svg{position:relative;z-index:1}
+.card b{display:block;font-size:12.5px;font-weight:800;letter-spacing:.1px;color:#10203a}
+.card small{display:block;color:var(--muted);font-size:10.5px;margin-top:4px;line-height:1.35;flex:1}
+.open{display:flex;align-items:center;justify-content:space-between;margin-top:9px;font-size:10px;font-weight:700;color:var(--c2)}
+.open i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c1) 14%,#fff);font-style:normal}
+.card.locked{filter:grayscale(.85);opacity:.7;border-color:#f0b3b3;background:#fff6f6;cursor:not-allowed}
+.card.locked .open{color:#b91c1c}
+.card.locked .open i{background:#fee2e2}
+.empty{margin-top:22px;text-align:center;color:var(--muted);font-size:12px}
+footer{display:flex;justify-content:space-between;color:#9aa6b7;font-size:10px;padding:16px 2px 2px}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+
+/* ---- tool view (desktop extension fallback) ---- */
+#toolView{flex:1;min-height:0;display:flex;flex-direction:column}
+.toolbar{height:48px;flex:none;background:#174d80;color:#fff;display:flex;align-items:center;padding:0 10px;gap:10px}
+.toolbar button{width:auto;padding:0 10px;font-size:11px;font-weight:700}
+.toolbar strong{font-size:12px;flex:1}
+#toolFrame{border:0;background:#fff;width:100%;height:100%;flex:1;min-height:0}
+#toolView[hidden]{display:none}
+body.dark{filter:invert(.88) hue-rotate(180deg)}
+
+/* ---- minimized bubble (desktop extension) ---- */
+#miniRestore{display:none;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#123b70,#2385c8);color:#fff;font-size:30px;font-weight:900;place-items:center;cursor:pointer;box-shadow:0 8px 24px #0005}
+body.minimized{background:transparent}body.minimized #app{display:none}body.minimized #miniRestore{display:grid}
+
+/* ---- inside the Android floating window: the native title bar replaces the web top bar ---- */
+html.native #topbar{display:none}
+html.native #app{border:0;border-radius:0}
+html.native #mainView{padding-top:14px}
