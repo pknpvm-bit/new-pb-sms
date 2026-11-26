@@ -29,8 +29,31 @@ jobs:
           SDK_ROOT="/usr/local/lib/android/sdk"
           echo "ANDROID_HOME=$SDK_ROOT" >> $GITHUB_ENV
           echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> $GITHUB_ENV
-          yes | sdkmanager --sdk_root="$SDK_ROOT" --licenses > /dev/null || true
-          sdkmanager --sdk_root="$SDK_ROOT" "platform-tools"
+
+          SDKMANAGER=""
+          for candidate in \
+            "$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" \
+            "$SDK_ROOT/cmdline-tools/tools/bin/sdkmanager" \
+            "$SDK_ROOT/tools/bin/sdkmanager"; do
+            if [ -x "$candidate" ]; then
+              SDKMANAGER="$candidate"
+              break
+            fi
+          done
+
+          if [ -z "$SDKMANAGER" ]; then
+            SDKMANAGER="$(find "$SDK_ROOT" -name sdkmanager -type f -executable 2>/dev/null | head -n 1)"
+          fi
+
+          if [ -z "$SDKMANAGER" ]; then
+            echo "sdkmanager not found under $SDK_ROOT"
+            ls -la "$SDK_ROOT" || true
+            exit 1
+          fi
+
+          echo "$(dirname "$SDKMANAGER")" >> $GITHUB_PATH
+          yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" --licenses > /dev/null || true
+          "$SDKMANAGER" --sdk_root="$SDK_ROOT" "platform-tools"
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
